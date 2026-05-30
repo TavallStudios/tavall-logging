@@ -1,5 +1,5 @@
 /*
- * TJVD License (TJ Valentine’s Discretionary License) — Version 1.0 (2025)
+ * TJVD License (TJ Valentineâ€™s Discretionary License) â€” Version 1.0 (2025)
  *
  * Copyright (c) 2025 Taheesh Valentine
  *
@@ -7,22 +7,17 @@
  * SEE LICENSE.TXT
  */
 
-package com.tjxjnoobie.api.platform.global.console;
+package org.tavall.logging;
 
-import com.tjxjnoobie.api.platform.global.annotations.Inject;
-import com.tjxjnoobie.api.platform.global.console.style.LogColors;
-import com.tjxjnoobie.api.interfaces.IGlobalContext;
-import com.tjxjnoobie.api.platform.global.metadata.AbstractLogMetaData;
+import org.tavall.logging.style.LogColors;
+import org.tavall.logging.style.LogText;
 
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-public class Log extends AbstractLogMetaData<Log> {
-
-    @Inject
-    private IGlobalContext globalContext;
+public class Log {
     private static final BlockingQueue<String> asyncQueue = new LinkedBlockingQueue<>();
     private static final Thread logThread;
 
@@ -44,24 +39,49 @@ public class Log extends AbstractLogMetaData<Log> {
         log("[SUCCESS] ", LogColors.GREEN, msg);
     }
 
+    public static void success(LogText text) {
+        success(text.build());
+    }
+
     public static void info(String msg) {
-        log("[INFO] ", LogColors.GREEN, msg);
+        log("[INFO] ", LogColors.WHITE, msg);
+    }
+
+    public static void info(LogText text) {
+        info(text.build());
     }
 
     public static void warn(String msg) {
         log("[WARN] ", LogColors.YELLOW, msg);
     }
 
+    public static void warn(LogText text) {
+        warn(text.build());
+    }
+
     public static void error(String msg) {
         log("[ERROR] ", LogColors.RED, msg);
+    }
+
+    public static void error(LogText text) {
+        error(text.build());
     }
 
     public static void critical(String msg) {
         log("[CRITICAL] ", LogColors.WHITE, LogColors.bgRed(msg));
     }
 
+    public static void critical(LogText text) {
+        critical(text.build());
+    }
+
+    public static LogText text() {
+        return LogText.create();
+    }
+
     private static void log(String level, String color, String msg) {
-        String output = color + level + " " + msg + LogColors.RESET;
+        String processed = LogColors.applyPlaceholders(msg);
+        String output = color + level + " " + processed + LogColors.RESET;
         asyncQueue.offer(output);
     }
 
@@ -145,7 +165,7 @@ public class Log extends AbstractLogMetaData<Log> {
 
     private static boolean isAppFrame(StackTraceElement ste) {
         String cn = ste.getClassName();
-        return cn.startsWith("com.tjxjnoobie.") || cn.startsWith("com.tjxnjoobie");
+        return cn.startsWith("org.tavall.") || cn.startsWith("com.tjxnjoobie");
     }
 
     private static String formatFrame(StackTraceElement ste) {
@@ -169,75 +189,4 @@ public class Log extends AbstractLogMetaData<Log> {
         }
         return cur;
     }
-
-    /**
-     * Print a summary of class metadata.
-     */
-    public void classSummary(Class<?> type) {
-        if (type == null) {
-            error("Class summary: <null type>");
-            return;
-        }
-        info("=== Class Summary: " + getType().getSimpleName() + " ===");
-        info("Structure: interface=" + isInterface() +
-                ", abstract=" + isAbstract() +
-                ", enum=" + isEnum() +
-                ", constructors=" + getConstructorCount());
-
-        info("Members: publicMethods=" + getPublicMethods().size() +
-                ", protectedMethods=" + getProtectedMethods().size() +
-                ", privateMethods=" + getPrivateMethods().size());
-
-        info("Fields: public=" + getPublicFields().size() +
-                ", protected=" + getProtectedFields().size() +
-                ", private=" + getPrivateFields().size());
-
-        info("DI Relations: providedAs=" + getProvidedAs().size() +
-                ", attachedDependencies=" + getAttachedDependencies().size() +
-                ", instantiatedBy=" + getInstantiatedBy().size());
-
-        info("Counters: registrations=" + getRegistrationCount() +
-                ", instantiations=" + getInstantiationCount());
-
-        if (!getSettings().isEmpty()) {
-            info("Settings: " + getSettings());
-        }
-
-        if (getTags().length > 0) {
-            info("Tags: " + String.join(", ", getTags()));
-        }
-
-        // Show specific settings
-        info("Exception Wrapping: " + isExceptionWrappingEnabled());
-        info("Log Eligible Injection: " + isLogEligibleInjection());
-        info("Log Verbosity Level: " + getLogVerbosityLevel());
-        info("Cache Instances: " + isCacheInstances());
-        info("Lazy Initialization: " + isLazyInitialization());
-        info("Singleton Scope: " + isSingletonScope());
-        info("Proxy Creation: " + isProxyCreationEnabled());
-        info("Strict Validation: " + isDependencyValidationStrict());
-        info("Performance Monitoring: " + isPerformanceMonitoring());
-    }
-
-    /**
-     * Print statistics about class loading and metadata tracking.
-     */
-    public void classLoadingStats() {
-        if (getAbstractClassMetaDataInstance() == null) {
-            error("Class loading statistics unavailable - registry not injected");
-            return;
-        }
-
-        info("=== Class Loading Statistics ===");
-        info("Total loaded classes in JVM: " + getTotalLoadedClasses());
-        info("Classes tracked in metadata: " + getTrackedClasses() +
-                " (" + String.format("%.1f", getTrackingPercentage()) + "%)");
-        info("Classes registered in DI: " + getRegisteredClasses() +
-                " (" + String.format("%.1f", getRegistrationPercentage()) + "% of tracked)");
-        info("Classes instantiated via DI: " + getInstantiatedClasses() +
-                " (" + String.format("%.1f", getInstantiationPercentage()) + "% of tracked)");
-        info("Summary: " + toString());
-    }
-
-
 }
