@@ -7,7 +7,7 @@
  * SEE LICENSE.TXT
  */
 
-package com.tjxjnoobie.api.platform.global.console.style;
+package org.tavall.logging.style;
 
 import java.util.Collections;
 import java.util.HashMap;

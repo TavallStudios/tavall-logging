@@ -7,10 +7,10 @@
  * SEE LICENSE.TXT
  */
 
-package com.tjxjnoobie.api.platform.global.console;
+package org.tavall.logging;
 
-import com.tjxjnoobie.api.platform.global.console.style.LogColors;
-import com.tjxjnoobie.api.platform.global.console.style.LogText;
+import org.tavall.logging.style.LogColors;
+import org.tavall.logging.style.LogText;
 
 import java.util.HashSet;
 import java.util.Set;
