@@ -16,6 +16,13 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * ANSI color/style constants and lightweight formatting helpers for console log output.
+ *
+ * <p>In addition to direct wrappers such as {@link #red(String)}, messages can contain named
+ * placeholders such as {@code %red%} or {@code %bg_blue%}. Placeholder lookup is case-insensitive
+ * and unknown tokens are preserved verbatim.</p>
+ */
 public class LogColors {
     public static final String RESET = "\u001B[0m";
 
@@ -110,8 +117,13 @@ public class LogColors {
     }
 
     /**
-     * Replaces placeholder tokens (e.g. {@code %yellow%}) with their ANSI counterparts.
-     * Unknown tokens are left untouched to avoid corrupting the message.
+     * Replaces named placeholder tokens with their ANSI control sequences.
+     *
+     * <p>Matching is case-insensitive. Unknown tokens are left untouched, and a null or empty
+     * message is returned unchanged.</p>
+     *
+     * @param message message containing zero or more {@code %name%} placeholders
+     * @return the message with known placeholders expanded
      */
     public static String applyPlaceholders(String message) {
         if (message == null || message.isEmpty()) {
@@ -136,6 +148,11 @@ public class LogColors {
         return sb.toString();
     }
 
+    /**
+     * Returns the immutable placeholder-to-ANSI mapping used by {@link #applyPlaceholders(String)}.
+     *
+     * @return immutable mapping keyed by uppercase placeholder names without percent delimiters
+     */
     public static Map<String, String> getPlaceholders() {
         return PLACEHOLDERS;
     }
