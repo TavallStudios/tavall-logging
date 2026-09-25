@@ -12,8 +12,13 @@ build:
 resources:
   mode: SYSTEM
 
+artifacts:
+  - name: tavall-logging
+    path: build/tavall-ci-artifacts/tavall-logging.jar
+
 requiredChecks:
   - quality
+  - artifact
 
 checks:
   quality:
@@ -22,3 +27,8 @@ checks:
       - "clean"
       - "check"
       - "assemble"
+
+  artifact:
+    executor: gradle
+    tasks:
+      - tavallCiArtifact
