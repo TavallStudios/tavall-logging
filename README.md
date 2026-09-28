@@ -30,14 +30,25 @@ Use the exact published version and repository access configured for your projec
 
 ## Project Structure
 
-This repository is a single Java library module (Module Type: LIBRARY; Runtime: None).
+`tavall-logging/` (root Gradle project)
+- **Root Java source/build module** ← This Module — `src/main/java/`, `build.gradle.kts`
+
+Module Type: `LIBRARY`; Runtime Owner: `None`.
 
 ## Documentation
 
 | Document | Purpose |
+| [Module Progression](docs/progression/TAVALL_LOGGING_PROGRESSION.md) | Audited module implementation, integration, validation, and history. |
 | --- | --- |
 | [Contributing](CONTRIBUTING.md) | Contribution and development notes. |
 | [Repository Git Workflow](docs/quality/GIT_WORKFLOW.md) | Applicable repository guidance. |
+
+## Module Development
+
+- **Module Type:** `LIBRARY`
+- **Runtime Owner:** `None`
+- **Current PR Stack:** README and module Progression [#10](https://github.com/TavallStudios/tavall-logging/pull/10); platform integration [#6](https://github.com/TavallStudios/tavall-logging/pull/6) (draft to `main`); CI localization [#7](https://github.com/TavallStudios/tavall-logging/pull/7) (draft to `staging/platform`).
+- **Module-local CI Definition:** Missing from current `main`: `.tavallci/ci.yaml` (required for a Tavall source/build module). This documentation PR records the gap and does not change CI configuration.
 
 ## Requirements / Compatibility
 
@@ -66,7 +77,7 @@ Source headers refer to the TJVD License and LICENSE.TXT, but no tracked LICENSE
 
 | Surface | Sync State | Location | Last Updated | Evidence |
 | --- | --- | --- | --- | --- |
-| GitHub | PRIMARY | TavallStudios/tavall-logging/README.md | 2026-09-27 12:29 PM PDT | https://github.com/TavallStudios/tavall-logging/pull/10. |
+| GitHub | PRIMARY | TavallStudios/tavall-logging/README.md | 2026-09-27 5:32 PM PDT| PR [#10](https://github.com/TavallStudios/tavall-logging/pull/10) updated to route the root module Progression and record module type, PR stack, and CI-definition state. |
 | Notion | NOT_APPLICABLE | — | 2026-09-27 12:29 PM PDT | README files are not synchronized as Notion twins. |
 
 ### Update History
@@ -74,5 +85,6 @@ Source headers refer to the TJVD License and LICENSE.TXT, but no tracked LICENSE
 | Timestamp | Surface | Event | Location | Previous Location | Evidence | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
 | 2026-09-27 12:29 PM PDT | GitHub | UPDATED | TavallStudios/tavall-logging/README.md | Same path | https://github.com/TavallStudios/tavall-logging/pull/10. | Reworked the public README to describe the current project, module boundary, usage, and documentation. |
+| 2026-09-27 5:32 PM PDT | GitHub | UPDATED | TavallStudios/tavall-logging/README.md | Same path | PR [#10](https://github.com/TavallStudios/tavall-logging/pull/10) | Added the required root-module Progression route, visible module marker, classification, PR stack, and CI-definition state. |
 
 </details>
