@@ -21,7 +21,7 @@ The core rule:
 | `Log.warn(String \| LogText)` | `[WARN]`, yellow | Expected degradation handled by a fallback (fail-closed state, local mode, unavailable integration). |
 | `Log.error(String \| LogText)` | `[ERROR]`, red | A failure the current operation could not handle. |
 | `Log.critical(String \| LogText)` | `[CRITICAL]`, red background | The process or a subsystem cannot continue. |
-| `Log.exception(Throwable)` | `[ERROR]` lines: exception, first application frame, cause chain, up to 8 application frames | Unexpected exceptions where the stack is needed to diagnose. |
+| `Log.exception(Throwable)` | `[ERROR]` lines: exception, first application frame, cause chain, up to 8 application frames | Unexpected exceptions where selected application frames help diagnose. |
 | `Log.text()` / `LogText.create()` / `LogText.of(...)` | A styled message builder | Multi-part messages with `LogColor` segments. |
 
 Behavior consumers must know:
@@ -58,7 +58,7 @@ public AdminAccountsMetaData loadAdminAccountsMetaData(AdminAccountsLookupReques
         ...
         return new AdminAccountsMetaDataBuilder().buildAdminAccountsMetaData(...);
     } catch (RuntimeException exception) {
-        Log.warn("Account-link authority failed while loading Account Tools: " + exception.getMessage());
+        Log.warn("Account-link authority is unavailable while loading Account Tools.");
         return AdminAccountsMetaData.unavailable(UNAVAILABLE);
     }
 }
@@ -73,7 +73,7 @@ public AdminAccountsMetaData loadAdminAccountsMetaData(AdminAccountsLookupReques
 ## Rules
 
 - Log once. Lower layers throw or return typed results; they do not also log the same failure.
-- Include the exception message, not the full stack, when the failure mode is known.
+- Prefer fixed operational context for known failures. Include exception details only after allowlisting or redacting them; raw messages can contain connection strings, authorization values, request data, or personal information.
 - Never log credentials, tokens, session ids, or personal data.
 
 ---
@@ -94,7 +94,7 @@ Second.
 }
 ```
 
-Use it where the cause is not known in advance and the application frames and cause chain are needed. Do not follow it with a second `Log.error` repeating the same failure.
+Use it where the cause is not known in advance and selected application frames help diagnose. The current implementation can omit the deepest root cause when several causes are nested, so its output is not a complete cause-chain report. It also prints exception messages without redaction: use it only when those messages are known to be safe for operational logs; otherwise log fixed context or allowlisted/redacted details. Do not follow it with a second `Log.error` repeating the same failure.
 
 ---
 
