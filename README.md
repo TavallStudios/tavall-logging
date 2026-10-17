@@ -39,6 +39,7 @@ Module Type: `LIBRARY`; Runtime Owner: `None`.
 
 | Document | Purpose |
 | --- | --- |
+| [Logging Access Styles](docs/LOGGING_ACCESS_STYLES.md) | Ranked, recommended use of `Log` and `LogText` in consumer code. |
 | [Module Progression](docs/progression/TAVALL_LOGGING_PROGRESSION.md) | Audited module implementation, integration, validation, and history. |
 | [Contributing](CONTRIBUTING.md) | Contribution and development notes. |
 | [Repository Git Workflow](docs/quality/GIT_WORKFLOW.md) | Applicable repository guidance. |
