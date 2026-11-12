@@ -1,0 +1,14 @@
+{
+  "authoring": "tjXJNOOBIE and Codex; advisory review is not owner approval.",
+  "baseSource": "e047172ab7c2be005baf0b2c4b46e230ead78417",
+  "result": "Compared named entrypoints, daemon output, placeholders and exception-frame behavior against current main source; API source unchanged since local source inspected. Documentation-only; runtime tests not applicable.",
+  "review": "Complete PR diff inspected; no unresolved correctness finding in reviewed scope. Independent human approval or Owner Self-Review remains required.",
+  "reviewCorrections": [
+    "Replace raw exception-message logging with fixed context and allowlisted/redacted detail guidance",
+    "Document existing nested-root-cause omission and unredacted message output without changing runtime behavior"
+  ],
+  "reviewType": "ADVISORY_AUTOMATED",
+  "rollback": "Revert the eventual merge through the existing GitHub PR workflow. No data migration or deployment in this change.",
+  "scope": "Logging consumer guide and README link.",
+  "testedSource": "a202d7810b6ce0c6038e6bd203bb83e00e89f765"
+}
